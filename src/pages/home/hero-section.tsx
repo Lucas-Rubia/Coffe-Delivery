@@ -1,5 +1,5 @@
 import { Coffee, Package, ShoppingCart, Timer } from "lucide-react";
-import { images } from "../../../utils/imagens";
+import { images } from "../../utils/imagens";
 
 export function HeroSection() {
   return (

@@ -1,4 +1,5 @@
-import { images } from "../../../utils/imagens";
+import { NavLink } from "react-router-dom";
+import { images } from "../../utils/imagens";
 
 export function Header() {
   return (
@@ -14,9 +15,11 @@ export function Header() {
         </div>
 
         <div>
-          <button className="bg-yellow_light rounded-lg p-[10px]">
-            <img src={images.Little_car} alt="little_car" />
-          </button>
+          <NavLink to="ShoppingCar" title="Carrinho">
+            <button className="bg-yellow_light rounded-lg p-[10px]">
+              <img src={images.Little_car} alt="little_car" />
+            </button>
+          </NavLink>
         </div>
       </div>
     </div>
