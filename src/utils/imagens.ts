@@ -16,6 +16,7 @@ import Irlandes from "../assets/imagens/irlandes.png"
 import Latte from "../assets/imagens/latte.png"
 import Macchiato from "../assets/imagens/macchiato.png"
 import Mocaccino from "../assets/imagens/mocaccino.png"
+import Illustration from "../assets/imagens/Illustration.png"
 
 
 export const images = {
@@ -37,4 +38,5 @@ export const images = {
   Havaiano,
   Arabe,
   Irlandes,
+  Illustration
 }

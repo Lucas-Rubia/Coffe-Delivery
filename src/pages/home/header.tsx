@@ -5,7 +5,11 @@ export function Header() {
   return (
     <div className="flex justify-between items-center bg-background py-8 px-40 ">
       <div>
-        <img src={images.CoffeDelivy} alt="Logo-CoffeDelivy" />
+        <NavLink to={"/"} title="Home">
+          <button>
+            <img src={images.CoffeDelivy} alt="Logo-CoffeDelivy" />
+          </button>
+        </NavLink>
       </div>
 
       <div className="flex gap-3 items-center">

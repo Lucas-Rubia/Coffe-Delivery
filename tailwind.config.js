@@ -31,8 +31,8 @@ export default {
   			base_hover: '#D7D5D5',
   			base_button: '#E6E5E5',
   			base_input: '#EDEDED',
-  			base_card: '#F3F2F2',
-  			background: 'hsl(var(--background))',
+  			"base-card": '#F3F2F2',
+  			background: '#FAFAFA',
   			white: '#FFFFFF',
   			foreground: 'hsl(var(--foreground))',
   			card: {
