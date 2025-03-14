@@ -12,7 +12,7 @@ export function useConter() {
   }
 
 
-  return {count, increment, decrement}
+  return {count, increment, decrement,setCount}
 }
 
 

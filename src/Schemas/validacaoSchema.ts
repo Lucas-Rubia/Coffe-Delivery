@@ -1,4 +1,4 @@
-import { PaymentType } from "@/enums/paymentType";
+import { PaymentType } from "@/Enums/paymentType";
 import { z } from "zod";
 
 export const validacaoSchema = z.object({

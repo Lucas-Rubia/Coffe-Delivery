@@ -1,5 +1,5 @@
 
-import { HeroSection } from "./hero-section";
+import { HeroSection } from "./heroSection";
 import { ProdutoHome } from "./produtosHome";
 
 export function Home(){

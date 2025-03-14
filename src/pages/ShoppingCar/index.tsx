@@ -1,7 +1,8 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { PaymentType } from "@/enums/paymentType";
+import { PaymentType } from "@/Enums/paymentType";
+import { addItemsProduct, removeFromCart, removeItemsProduct, selectCart } from "@/redux/cartSlice";
 import { ValidacaoFromsType, validacaoSchema } from "@/Schemas/validacaoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,13 +14,26 @@ import {
   Plus,
   Trash2Icon
 } from "lucide-react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { images } from "../../utils/imagens";
 import { FormValidation } from "./formsValidation";
 
 
+
+
+
 export function ShooppingCar() {
+
+const DELIVERY = 3.5
+
+const {products} = useSelector(selectCart)
+
+
+const dispatch = useDispatch();
+
+
 
 const navigate = useNavigate();
 
@@ -43,6 +57,17 @@ const navigate = useNavigate();
     })
   };
 
+const subtotal = useMemo(() => {
+  return products.reduce((acc, product) => {
+    return acc + product.price * product.count;
+  }, 0)
+}, [products])
+
+
+const total = useMemo(() => {
+  return subtotal + DELIVERY;
+},[subtotal])
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex mt-10 ">
@@ -111,7 +136,6 @@ const navigate = useNavigate();
                           </FormLabel>
                         </FormItem>
 
-
                         <FormItem className="flex items-center  ">
                           <FormControl>
                             <RadioGroupItem
@@ -131,7 +155,6 @@ const navigate = useNavigate();
                           </FormLabel>
                         </FormItem>
 
-
                         <FormItem>
                           <FormControl>
                             <RadioGroupItem
@@ -150,9 +173,6 @@ const navigate = useNavigate();
                             </span>
                           </FormLabel>
                         </FormItem>
-
-
-
                       </RadioGroup>
                     </FormControl>
                     <FormMessage />
@@ -160,7 +180,6 @@ const navigate = useNavigate();
                 )}
               />
             </div>
-
           </div>
         </div>
 
@@ -170,53 +189,63 @@ const navigate = useNavigate();
           </div>
 
           <div className="rounded-tr-2xl rounded-bl-2xl bg-base-card ml-8">
-            <div className="flex p-10 gap-6">
-              <div className="size-16">
-                <img
-                  src={images.ExpressoTradicional}
-                  alt="ExpressoTradicional"
-                />
-              </div>
-
-              <div>
-                <div className="flex mb-2">
-                  <h3>Expresso Tradicional</h3>
-                  <p className="ml-[50px] font-bold font-Baloo text-base_text text-lg texte-center">
-                    R$ 9,90
-                  </p>
+            {products.map((product, index) => (
+              <div key={index} className="flex p-10 gap-6">
+                <div className="size-16">
+                  <img src={product.image} alt="ExpressoTradicional" />
                 </div>
 
-                <div className=" flex [&_div]:flex gap-2 [&_div]:rounded-lg ">
-                  <div className="bg-base_button p-2 gap-1">
-                    <Minus className="text-purple" />
-                    <span>1</span>
-                    <Plus className="text-purple" />
+                <div>
+                  <div className="flex mb-2">
+                    <h3>{product.titulo}</h3>
+                    <p className="ml-[50px] font-bold font-Baloo text-base_text text-lg texte-center">
+                      R$ {product.price.toFixed(2)}
+                    </p>
                   </div>
 
-                  <div className="bg-base_button p-2 text-base_text uppercase gap-2">
-                    <Trash2Icon className="text-purple size-4 items-center mt-1" />
-                    <p>Remover</p>
+                  <div className=" flex [&_div]:flex gap-2 [&_div]:rounded-lg ">
+                    <div className=" flex bg-base_button items-center rounded-lg p-2 gap-1">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          dispatch(removeItemsProduct(product.titulo))
+                        }
+                      >
+                        <Minus className="size-3.5 text-purple" />
+                      </button>
+                      <span className="text-xl">{product.count}</span>
+                      <button type="button" onClick={() =>
+                          dispatch(addItemsProduct(product.titulo))
+                        }>
+                        <Plus className="size-3.5 text-purple" />
+                      </button>
+                    </div>
+
+                    <button type="button" className="bg-base_button p-2 flex text-base_text uppercase gap-2 rounded-md" onClick={() => dispatch(removeFromCart(product.titulo))}>
+                      <Trash2Icon className="text-purple size-4 items-center mt-1" />
+                      <p>Remover</p>
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
 
             <Separator className="w-368 mx-10" />
 
             <div className="px-10 py-6 text-sm text-base_text space-y-3">
               <div className="flex justify-between">
                 <p>Total de Itens</p>
-                <p>R$ 29,70</p>
+                <p>R$ {subtotal.toFixed(2)}</p>
               </div>
 
               <div className="flex justify-between">
                 <p>Entrega</p>
-                <p>R$ 3,50</p>
+                <p>R$ {DELIVERY.toFixed(2)}</p>
               </div>
 
               <div className="flex justify-between text-base_subtitle text-xl font-bold">
                 <p>Total</p>
-                <p>R$ 33,20</p>
+                <p>R$ {total.toFixed(2)}</p>
               </div>
 
               <button
@@ -230,122 +259,5 @@ const navigate = useNavigate();
         </div>
       </form>
     </Form>
-
-    // <div className="flex mt-10 ">
-    //   <div>
-    //     <h1 className="text-base_subtitle text-[23px] font-semibold mb-[15px] ml-40">
-    //       Complete seu Pedido
-    //     </h1>
-
-    //     <div className="bg-base-card rounded-lg p-10 ml-40 max-w-[640px]">
-    //       <div>
-    //         <div className="pl-7">
-    //           <div className="flex gap-2 items-start ">
-    //             <MapPin className="size-5 text-yellow_dark my-1" />
-    //             <div>
-    //               <p className="text-base">Endereço de Entrega</p>
-    //               <p className=" text-sm">
-    //                 Infrome o endereço onde deseja receber seu pedido
-    //               </p>
-    //             </div>
-    //           </div>
-    //           <FormValidation />
-    //         </div>
-    //       </div>
-    //     </div>
-
-    //     <div className="bg-base-card rounded-lg p-10 mb-10 mt-3 ml-40">
-    //       <div className="flex text-base font-Roboto gap-2">
-    //         <DollarSign className="text-purple size-[22px]" />
-    //         <div>
-    //           <p>Pagamento</p>
-    //           <p className="text-sm text-base_text">
-    //             O Pagamento é feito na entrega. Escolha a forma que deseja pagar
-    //           </p>
-    //         </div>
-    //       </div>
-
-    //       <div className="mt-8 mb-10">
-    //         <div className="flex gap-3 [&_button]:flex [&_button]:items-center [&_button]:gap-3 [&_button]:bg-base_button [&_button]:py-2 [&_button]:pl-6 [&_button]:rounded-md [&_button]:flex-1  ">
-    //           <button className="border border-transparent hover:border-purple transition cursor-pointer">
-    //             <CreditCardIcon className="text-purple size-5" />
-    //             <span className="text-xs text-base_text">
-    //               CARTÃO DE CRÉDITO
-    //             </span>
-    //           </button>
-    //           <button className="border border-transparent hover:border-purple transition">
-    //             <CreditCardIcon className="text-purple size-5" />
-    //             <span className="text-xs text-base_text">CARTÃO DE DÉBITO</span>
-    //           </button>
-    //           <button className="border border-transparent hover:border-purple transition">
-    //             <CoinsIcon className="text-purple size-5" />
-    //             <span className="text-xs text-base_text">DINHEIRO</span>
-    //           </button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-
-    // <div>
-    //   <div className="text-base_subtitle text-[23px] font-semibold mb-[15px] ml-8">
-    //     <h1>Cafés Selecionados</h1>
-    //   </div>
-
-    //   <div className="rounded-tr-2xl rounded-bl-2xl bg-base-card ml-8">
-    //     <div className="flex p-10 gap-6">
-    //       <div className="size-16">
-    //         <img src={images.ExpressoTradicional} alt="ExpressoTradicional" />
-    //       </div>
-
-    //       <div>
-    //         <div className="flex mb-2">
-    //           <h3>Expresso Tradicional</h3>
-    //           <p className="ml-[50px] font-bold font-Baloo text-base_text text-lg texte-center">
-    //             R$ 9,90
-    //           </p>
-    //         </div>
-
-    //         <div className=" flex [&_div]:flex gap-2 [&_div]:rounded-lg ">
-    //           <div className="bg-base_button p-2 gap-1">
-    //             <Minus className="text-purple" />
-    //             <span>1</span>
-    //             <Plus className="text-purple" />
-    //           </div>
-
-    //           <div className="bg-base_button p-2 text-base_text uppercase gap-2">
-    //             <Trash2Icon className="text-purple size-4 items-center mt-1" />
-    //             <p>Remover</p>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-
-    //     <Separator className="w-368 mx-10" />
-
-    //     <div className="px-10 py-6 text-sm text-base_text space-y-3">
-    //       <div className="flex justify-between">
-    //         <p>Total de Itens</p>
-    //         <p>R$ 29,70</p>
-    //       </div>
-
-    //       <div className="flex justify-between">
-    //         <p>Entrega</p>
-    //         <p>R$ 3,50</p>
-    //       </div>
-
-    //       <div className="flex justify-between text-base_subtitle text-xl font-bold">
-    //         <p>Total</p>
-    //         <p>R$ 33,20</p>
-    //       </div>
-
-    //       <NavLink to="Confirmation" title="Confirmation">
-    //         <div className=" flex justify-center bg-yellow p-3 rounded-lg text-white text-sm mt-6">
-    //           <button>Confirmar Pedido</button>
-    //         </div>
-    //       </NavLink>
-    //     </div>
-    //   </div>
-    // </div>
-    // </div>
   );
 }

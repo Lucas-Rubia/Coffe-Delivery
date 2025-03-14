@@ -1,4 +1,4 @@
-import { PaymentType } from "@/enums/paymentType";
+import { PaymentType } from "@/Enums/paymentType";
 import { ValidacaoFromsType } from "@/Schemas/validacaoSchema";
 import { images } from "@/utils/imagens";
 import { DollarSign, MapPin, TimerIcon } from "lucide-react";
@@ -24,11 +24,13 @@ export function Confirmation (){
   }
 
     return (
+      
       <div className="ml-40 mt-20 mb-10">
         <div className="mb-10">
           <h1 className="text-yellow_dark text-[32px] font-Baloo font-bold">
             Uhu! Pedido confirmado
           </h1>
+          
           <p className="text-xl font-Roboto text-base_subtitle">
             Agora é só aguardar que logo o café chegará até você
           </p>

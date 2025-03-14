@@ -1,6 +1,8 @@
+import { setAddCart } from "@/redux/cartSlice";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
-import { useConter } from "../hooks/conter";
-
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+import { useConter } from "../Hooks/conter";
 interface ProdutostoProps {
   item: {
     titulo: string;
@@ -8,11 +10,28 @@ interface ProdutostoProps {
     image: string;
     price: number;
     tags: string[];
+    
   };
 }
 
+
+
+
 export function Produto({ item }: ProdutostoProps) {
-  const { count, increment, decrement } = useConter();
+  const { count, increment, decrement, setCount } = useConter();
+ 
+  const dispatch = useDispatch();
+
+  const handleAdProduct = () => {
+    dispatch(setAddCart({
+      titulo: item.titulo,
+      image: item.image,
+      price: item.price,
+      count: count,
+    }));
+    setCount(0);
+  }
+  
 
   return (
     <div className="relative bg-background rounded-tr-2xl rounded-bl-2xl max-w-64 max-h-80 mb-10">
@@ -60,9 +79,16 @@ export function Produto({ item }: ProdutostoProps) {
           </div>
         </div>
 
-        <div className="bg-purple_dark p-2.5 rounded-lg ml-2">
-          <ShoppingCart className="text-white items-center" />
-        </div>
+        <button
+          className="bg-purple_dark p-2.5 rounded-lg ml-2"
+          onClick={() => {
+            toast(`${item.titulo} adicionado ao carrinho`, {
+              description: `${count} Produtos adicionado(s) ao carrinho`,
+            }); handleAdProduct(); 
+          }}
+        >
+          <ShoppingCart className="text-white items-cen</button>ter" />
+        </button>
       </div>
     </div>
   );
