@@ -2,7 +2,7 @@ import { setAddCart } from "@/redux/cartSlice";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { useConter } from "../Hooks/conter";
+import { useConter } from "../hooks/conter";
 interface ProdutostoProps {
   item: {
     titulo: string;

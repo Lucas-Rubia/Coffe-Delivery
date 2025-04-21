@@ -1,5 +1,5 @@
 import { PRODUTODOS } from "../../assets/data/DescriptionProdutos";
-import { Produto } from "../../Componentes/produto";
+import { Produto } from "../../componentes/produto";
 
 const Products = PRODUTODOS;
 

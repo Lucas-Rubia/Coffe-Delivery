@@ -1,4 +1,5 @@
-import { PaymentType } from "@/Enums/paymentType";
+
+import { PaymentType } from "@/enums/paymentType";
 import { ValidacaoFromsType } from "@/Schemas/validacaoSchema";
 import { images } from "@/utils/imagens";
 import { DollarSign, MapPin, TimerIcon } from "lucide-react";

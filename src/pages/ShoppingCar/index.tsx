@@ -1,7 +1,7 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { PaymentType } from "@/Enums/paymentType";
+import { PaymentType } from "@/enums/paymentType";
 import { addItemsProduct, removeFromCart, removeItemsProduct, selectCart } from "@/redux/cartSlice";
 import { ValidacaoFromsType, validacaoSchema } from "@/Schemas/validacaoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
